@@ -1,0 +1,225 @@
+options:
+    # Globale Einstellungen
+    prefix: "&8[&6Server&8] &7"
+    starting_money: 100
+    max_homes: 3
+    teleport_delay: 3
+
+variables:
+    {money::%player%} = 0
+    {homes::%player%::*} = ""
+    {warps::*} = ""
+    {bans::*} = ""
+    {mutes::*} = ""
+    {kits::*} = ""
+
+# ========== MODERATION ==========
+command /ban <player> [<text>]:
+    permission: op
+    permission message: "&cNur Admins können Spieler bannen!"
+    trigger:
+        if arg-1 is not set:
+            send "%{@prefix}%&cBenutzung: /ban <Spieler> [Grund]"
+            stop
+        if arg-1 is console:
+            send "%{@prefix}%&cDu kannst die Konsole nicht bannen!"
+            stop
+        if {bans::%arg-1%} is set:
+            send "%{@prefix}%&c%arg-1% ist bereits gebannt!"
+            stop
+            
+        set {bans::%arg-1%} to arg-2 ? "Kein Grund angegeben"
+        kick arg-1 due to "&4Du wurdest gebannt! &7Grund: &f%{bans::%arg-1%}%"
+        broadcast "%{@prefix}%&4%arg-1% &7wurde von &4%player% &7gebannt! Grund: &f%{bans::%arg-1%}%"
+
+command /unban <player>:
+    permission: op
+    trigger:
+        if {bans::%arg-1%} is not set:
+            send "%{@prefix}%&c%arg-1% ist nicht gebannt!"
+            stop
+        delete {bans::%arg-1%}
+        broadcast "%{@prefix}%&a%arg-1% &7wurde von &a%player% &7entbannt!"
+
+command /kick <player> [<text>]:
+    permission: op
+    trigger:
+        kick arg-1 due to arg-2 ? "Kein Grund angegeben"
+        broadcast "%{@prefix}%&e%arg-1% &7wurde von &e%player% &7gekickt! Grund: &f%arg-2%"
+
+command /mute <player> [<text>]:
+    permission: op
+    trigger:
+        if {mutes::%arg-1%} is set:
+            send "%{@prefix}%&c%arg-1% ist bereits gemuted!"
+            stop
+        set {mutes::%arg-1%} to arg-2 ? "Kein Grund angegeben"
+        broadcast "%{@prefix}%&6%arg-1% &7wurde von &6%player% &7gemuted! Grund: &f%{mutes::%arg-1%}%"
+
+# ========== SPIELERVERWALTUNG ==========
+command /vanish:
+    permission: op
+    aliases: /v
+    trigger:
+        execute console command "vanish %player%"
+        if player has permission "essentials.vanish":
+            send "%{@prefix}%&aDu bist jetzt sichtbar!"
+        else:
+            send "%{@prefix}%&7Du bist jetzt unsichtbar!"
+
+command /fly:
+    permission: op
+    trigger:
+        execute console command "fly %player%"
+        if player has permission "essentials.fly":
+            send "%{@prefix}%&cFlugmodus deaktiviert!"
+        else:
+            send "%{@prefix}%&aFlugmodus aktiviert!"
+
+command /heal [<player>]:
+    permission: op
+    trigger:
+        set {_target} to arg-1 ? player
+        execute console command "heal %{_target}%"
+        send "%{@prefix}%&a%{_target}% wurde geheilt!"
+
+# ========== WIRTSCHAFT ==========
+on join:
+    if {money::%player%} is not set:
+        set {money::%player%} to {@starting_money}
+
+command /money [<player>]:
+    trigger:
+        set {_target} to arg-1 ? player
+        send "%{@prefix}%&7Kontostand von &e%{_target}%&7: &a%{money::%{_target}%}%$"
+
+command /pay <player> <number>:
+    trigger:
+        if arg-2 <= 0:
+            send "%{@prefix}%&cDu kannst nur positive Beträge senden!"
+            stop
+        if {money::%player%} < arg-2:
+            send "%{@prefix}%&cDu hast nicht genug Geld!"
+            stop
+        remove arg-2 from {money::%player%}
+        add arg-2 to {money::%arg-1%}
+        send "%{@prefix}%&aDu hast &e%arg-1% %arg-2%$ &agegeben."
+        send "%{@prefix}%&aDu hast &e%arg-2%$ &avon &e%player% &aerhalten." to arg-1
+
+# ========== TELEPORTATION ==========
+command /spawn:
+    trigger:
+        execute console command "spawn %player%"
+        send "%{@prefix}%&7Teleportiere zum Spawn..."
+
+command /tpa <player>:
+    trigger:
+        send "%{@prefix}%&e%player% &7möchte sich zu dir teleportieren! &a/tpaccept &7oder &c/tpdeny"
+        send "%{@prefix}%&7Anfrage an &e%arg-1% &7gesendet!" to player
+        set {tpa::%arg-1%} to player
+
+command /tpaccept:
+    trigger:
+        if {tpa::%player%} is not set:
+            send "%{@prefix}%&cKeine ausstehende Teleportanfrage!"
+            stop
+        execute console command "tp %{tpa::%player%}% %player%"
+        send "%{@prefix}%&7Teleportiere &e%{tpa::%player%}% &7zu dir..."
+        delete {tpa::%player%}
+
+# ========== HOMES ==========
+command /sethome <text>:
+    trigger:
+        if size of {homes::%player%::*} >= {@max_homes}:
+            send "%{@prefix}%&cDu kannst maximal {@max_homes} Homes setzen!"
+            stop
+        execute console command "sethome %arg-1%"
+        send "%{@prefix}%&aHome &e%arg-1% &agesetzt!"
+
+command /home <text>:
+    trigger:
+        execute console command "home %player% %arg-1%"
+        send "%{@prefix}%&7Teleportiere zu Home &e%arg-1%..."
+
+# ========== WARPS ==========
+command /setwarp <text>:
+    permission: op
+    trigger:
+        execute console command "setwarp %arg-1%"
+        send "%{@prefix}%&aWarp &e%arg-1% &agesetzt!"
+
+command /warp <text>:
+    trigger:
+        execute console command "warp %player% %arg-1%"
+        send "%{@prefix}%&7Teleportiere zu Warp &e%arg-1%..."
+
+# ========== CHAT ==========
+command /broadcast <text>:
+    permission: op
+    aliases: /bc
+    trigger:
+        broadcast "%{@prefix}%&6[ANKÜNDIGUNG] &f%arg-1%"
+
+command /clearchat:
+    permission: op
+    trigger:
+        loop 100 times:
+            send "" to all players
+        send "%{@prefix}%&aDer Chat wurde geleert!"
+
+# ========== WELTVERWALTUNG ==========
+command /time set <text>:
+    permission: op
+    trigger:
+        execute console command "time set %arg-1%"
+        send "%{@prefix}%&aZeit auf &e%arg-1% &agesetzt!"
+
+command /weather <text>:
+    permission: op
+    trigger:
+        execute console command "weather %arg-1%"
+        send "%{@prefix}%&aWetter auf &e%arg-1% &agesetzt!"
+
+# ========== KITS ==========
+command /createkit <text>:
+    permission: op
+    trigger:
+        execute console command "createkit %arg-1%"
+        send "%{@prefix}%&aKit &e%arg-1% &aerstellt!"
+
+command /kit <text>:
+    cooldown: 1 hour
+    cooldown message: &cDu kannst dieses Kit erst wieder in %remaining% benutzen!
+    trigger:
+        execute console command "kit %arg-1% %player%"
+        send "%{@prefix}%&aDu hast das Kit &e%arg-1% &aerhalten!"
+
+# ========== SPIELERINFORMATION ==========
+command /whois <player>:
+    trigger:
+        send "%{@prefix}%&6=== &eInfo über %arg-1% &6==="
+        send "&7IP: &f%ip of arg-1%"
+        send "&7Gamemode: &f%gamemode of arg-1%"
+
+# ========== SERVERVERWALTUNG ==========
+command /restart:
+    permission: op
+    trigger:
+        broadcast "%{@prefix}%&4Der Server startet in 30 Sekunden neu!"
+        wait 30 seconds
+        execute console command "restart"
+
+# ========== HILFE ==========
+command /essentials:
+    aliases: /ess
+    trigger:
+        send "%{@prefix}%&6=== &eEssentials &6==="
+        send "&7Moderation: &f/ban, /kick, /mute"
+        send "&7Spieler: &f/vanish, /fly, /heal"
+        send "&7Wirtschaft: &f/money, /pay"
+        send "&7Teleport: &f/tpa, /home, /warp"
+        send "&7Chat: &f/broadcast, /clearchat"
+        send "&7Welt: &f/time, /weather"
+        send "&7Kits: &f/kit, /createkit"
+        send "&7Info: &f/whois"
+        send "&7Server: &f/restart"
