@@ -1,54 +1,6 @@
 ✅ GamerSystem Installation Guide
 ━━━━━━━━━━━━━━━━━━━━━━━
 
-1. 📥 Download Essentials
-
-Get gamersystem.sk from our GitHub
-(Check description for direct link)
-
-2. ⚙️ Install Skript
-
-Required base: Skript Plugin
-
-➡️ Place JAR in your plugins folder
-
-3. 🚀 Server Startup
-
-Wait for full initialization
-
-Verify Skript loads correctly
-
-4. 📂 Install Script
-
-markdown
-plugins/
-└── Skript/
-    └── scripts/
-        └── gamersystem.sk  ← Place here
-5. 🔄 Activate System
-
-bash
-/skript reload gamersystem.sk
-6. 🎮 Key Command
-
-bash
-/ess  # Shows all available features
-⚠️ Important Notes
-
-🔄 Always reload after updates
-
-❌ Redistribution prohibited
-
-📊 Supports Skript 2.6+
-
-💡 Pro Tips
-
-Type /ess help for commands
-
-Check console for load confirmation
-
-Backup before major updates
-
 🇬🇧 English Version
 ━━━━━━━━━━━━━━━━━━━━━━━
 
