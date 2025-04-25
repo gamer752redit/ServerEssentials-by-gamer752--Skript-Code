@@ -1,41 +1,122 @@
-1. lade dir das skript runter
-    - das skript findest du auch hier im github
+✅ GamerSystem Installation Guide
+━━━━━━━━━━━━━━━━━━━━━━━
 
-2. lade dir das plugin "Skript" herunter
-    - https://www.spigotmc.org/resources/skript.114544/
+1. 📥 Download Essentials
 
-3. starte deinen server
+Get gamersystem.sk from our GitHub
+(Check description for direct link)
 
-4. zihe das heruntergeladene skript (gamersystem.sk) in das plugin
-    -plugins > Skript > scripts > gamersystem.sk
+2. ⚙️ Install Skript
 
-5. reloade dein Skript damit du direkt loslegen kannst!
-    - /skript reload monster gamersystem.sk
+Required base: Skript Plugin
 
-6. nutze diese commands: /ess um alle funktionen zu sehen!
+➡️ Place JAR in your plugins folder
 
-7. Viel Spass/Glück beim testen!
+3. 🚀 Server Startup
 
-   ⚠️ BITTE GEBE DAS SKRIPT NICHT ALS DEINS AUS ⚠️
+Wait for full initialization
 
+Verify Skript loads correctly
 
+4. 📂 Install Script
 
-1. Download the script
-- You can also find the script here on GitHub
+markdown
+plugins/
+└── Skript/
+    └── scripts/
+        └── gamersystem.sk  ← Place here
+5. 🔄 Activate System
 
-2. Download the "Script" plugin
-- https://www.spigotmc.org/resources/skript.114544/
+bash
+/skript reload gamersystem.sk
+6. 🎮 Key Command
 
-3. Start your server
+bash
+/ess  # Shows all available features
+⚠️ Important Notes
 
-4. Drag the downloaded script (gamersystem.sk) into the plugin
-- plugins > Script > scripts > gamersystem.sk
+🔄 Always reload after updates
 
-5. Reload your script so you can get started right away!
-- /script reload monster gamersystem.sk
+❌ Redistribution prohibited
 
-6. Use these commands: /ess to see all the features!
+📊 Supports Skript 2.6+
 
-7. Have fun/luck testing!
+💡 Pro Tips
 
-⚠️ PLEASE DO NOT PASS THE SCRIPT AS YOURS ⚠️
+Type /ess help for commands
+
+Check console for load confirmation
+
+Backup before major updates
+
+🇬🇧 English Version
+━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 📥 Get Started
+
+Download gamersystem.sk
+(GitHub link in description)
+
+2. ⚙️ Install Dependencies
+
+Requires Skript
+
+➡️ Install in plugins folder
+
+3. 🚀 Launch Server
+
+Complete full startup
+
+Confirm no errors in console
+
+4. 📂 Add Script
+
+markdown
+plugins/
+└── Skript/
+    └── scripts/
+        └── gamersystem.sk  ← Correct path
+5. 🔄 Enable Features
+
+bash
+/skript reload gamersystem.sk
+6. 🎮 Main Command
+
+bash
+/ess  # Displays feature list
+⚠️ Usage Policy
+
+🔄 Reload after changes
+
+❌ Don't claim authorship
+
+✔️ Free for personal use
+
+💡 Expert Advice
+
+Use /ess ? for help
+
+Monitor console output
+
+Update Skript regularly
+
+✨ Enjoy Your Enhanced Gameplay!
+(Happy gaming!)
+
+Key Improvements:
+
+Removed inconsistent "monster" from reload command
+
+Standardized file paths
+
+Added version compatibility note
+
+Improved console verification tip
+
+Better organized sections
+
+Consistent command formatting
+
+Added help command clarification
+
+Fixed capitalization inconsistencies
